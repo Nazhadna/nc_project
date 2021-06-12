@@ -1,8 +1,8 @@
 package com.company.nc_project.controllers;
 
-import com.company.nc_project.exceptions.ResourceNotFoundException;
 import com.company.nc_project.model.Client;
 import com.company.nc_project.repository.ClientRepository;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,10 +21,9 @@ public class ClientController {
     }
 
     @GetMapping("/client/{id}")
-    public ResponseEntity<Client> getContactById(@PathVariable(value = "id") UUID contactId)
-            throws ResourceNotFoundException {
+    public ResponseEntity<Client> getContactById(@PathVariable(value = "id") UUID contactId) throws NotFoundException {
         Client client = clientRepository.findById(contactId)
-                .orElseThrow(() -> new ResourceNotFoundException("Client not found for id : " + contactId));
+                .orElseThrow(() -> new NotFoundException("Client not found for id : " + contactId));
         return ResponseEntity.ok().body(client);
     }
 
@@ -35,12 +34,12 @@ public class ClientController {
 
     @DeleteMapping("/client/{id}")
     public String deleteContact(@PathVariable(value = "id") UUID clientId)
-            throws ResourceNotFoundException {
+            throws NotFoundException {
 
         //clientRepository.deleteById(clientId);
 
         Client client = clientRepository.findById(clientId)
-                .orElseThrow(() -> new ResourceNotFoundException("Contact not found for id : " + clientId));
+                .orElseThrow(() -> new NotFoundException("Contact not found for id : " + clientId));
 
         clientRepository.delete(client);
         return "client " + client.getName() + " deleted";
