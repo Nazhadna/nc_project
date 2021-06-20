@@ -2,46 +2,56 @@ package com.company.nc_project.controllers;
 
 import com.company.nc_project.model.Client;
 import com.company.nc_project.repository.ClientRepository;
-import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
+@RequestMapping("/api/client")
 public class ClientController {
 
     @Autowired
     ClientRepository clientRepository;
 
-    @GetMapping("/client")
-    public Iterable<Client> getAllContacts() {
+    @GetMapping()
+    public Iterable<Client> getAllClients() {
         return clientRepository.findAll();
     }
 
-    @GetMapping("/client/{id}")
-    public ResponseEntity<Client> getContactById(@PathVariable(value = "id") UUID contactId) throws NotFoundException {
-        Client client = clientRepository.findById(contactId)
-                .orElseThrow(() -> new NotFoundException("Client not found for id : " + contactId));
-        return ResponseEntity.ok().body(client);
+    @GetMapping("/{id}")
+    public Optional<Client> getClientById(@PathVariable(value = "id") UUID clientId) {
+        return clientRepository.findById(clientId);
     }
 
-    @PostMapping("/client")
-    public Client createContact(@RequestBody Client client) {
+    @PostMapping("/{id}")
+    public Client updateClient(@PathVariable(value = "id") UUID clientId, @RequestBody Client client) {
+        client.setId(clientId);
         return clientRepository.save(client);
     }
 
-    @DeleteMapping("/client/{id}")
-    public String deleteContact(@PathVariable(value = "id") UUID clientId)
-            throws NotFoundException {
+    @PostMapping()
+    public Client createClient(@RequestBody Client client) {
+        return clientRepository.save(client);
+    }
 
-        //clientRepository.deleteById(clientId);
+    @DeleteMapping("/{id}")
+    public String deleteClient(@PathVariable(value = "id") UUID clientId) throws EntityNotFoundException {
+
+        clientRepository.deleteById(clientId);
 
         Client client = clientRepository.findById(clientId)
-                .orElseThrow(() -> new NotFoundException("Contact not found for id : " + clientId));
+                .orElseThrow(() -> new EntityNotFoundException("Contact not found for id : " + clientId));
 
         clientRepository.delete(client);
-        return "client " + client.getName() + " deleted";
+
+        return "Client with id " + clientId + " deleted";
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public String handleException(EntityNotFoundException e) {
+        return "error: " + e.getMessage();
     }
 }
