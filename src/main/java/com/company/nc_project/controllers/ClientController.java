@@ -26,9 +26,8 @@ public class ClientController {
         return clientRepository.findById(clientId);
     }
 
-    @PostMapping("/{id}")
-    public Client updateClient(@PathVariable(value = "id") UUID clientId, @RequestBody Client client) {
-        client.setId(clientId);
+    @PostMapping("/update")
+    public Client updateClient(@RequestBody Client client) {
         return clientRepository.save(client);
     }
 
