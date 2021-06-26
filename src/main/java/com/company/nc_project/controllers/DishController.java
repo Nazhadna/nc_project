@@ -3,6 +3,7 @@ package com.company.nc_project.controllers;
 import com.company.nc_project.model.Dish;
 import com.company.nc_project.repository.DishRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
@@ -33,15 +34,13 @@ public class DishController {
     @DeleteMapping("/{id}")
     public String deleteDish(@PathVariable(value = "id") UUID dishId) throws EntityNotFoundException {
 
-        Dish dish = dishRepository.findById(dishId)
-                .orElseThrow(() -> new EntityNotFoundException("Dish not found for id : " + dishId));
-
-        dishRepository.delete(dish);
-        return "Dish " + dish.getName() + " deleted";
+        dishRepository.deleteById(dishId);
+        return "Dish " + dishRepository.findById(dishId).orElse(null).getName() + " deleted";
     }
 
-    @ExceptionHandler(EntityNotFoundException.class)
-    public String handleException(EntityNotFoundException e) {
+
+    @ExceptionHandler(EmptyResultDataAccessException.class)
+    public String handleException(EmptyResultDataAccessException e) {
         return "error: " + e.getMessage();
     }
 }
