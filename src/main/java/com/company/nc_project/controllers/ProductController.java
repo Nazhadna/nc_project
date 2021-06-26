@@ -5,6 +5,7 @@ import com.company.nc_project.model.StoredItemProjection;
 import com.company.nc_project.model.Product;
 import com.company.nc_project.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -39,5 +40,10 @@ public class ProductController {
 
         productRepository.deleteStoredItem(storedItemId);
         return "Product deleted";
+    }
+
+    @ExceptionHandler(EmptyResultDataAccessException.class)
+    public String handleException(EmptyResultDataAccessException e) {
+        return "error: " + e.getMessage();
     }
 }
