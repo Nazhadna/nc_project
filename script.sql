@@ -1,7 +1,7 @@
 CREATE TABLE public.gender
 (
     id uuid NOT NULL,
-    gender_char "char",
+    name "char",
     CONSTRAINT gender_pkey PRIMARY KEY (id)
 )
 
@@ -43,7 +43,7 @@ ALTER TABLE public.client
 CREATE TABLE public.country
 (
     id uuid NOT NULL,
-    country_name text COLLATE pg_catalog."default",
+    name text COLLATE pg_catalog."default",
     CONSTRAINT country_pkey PRIMARY KEY (id)
 )
 
@@ -108,7 +108,7 @@ ALTER TABLE public.client_dish
 CREATE TABLE public.place
 (
     id uuid NOT NULL,
-    place_name text COLLATE pg_catalog."default",
+    name text COLLATE pg_catalog."default",
     CONSTRAINT place_pkey PRIMARY KEY (id)
 )
 
@@ -149,7 +149,7 @@ ALTER TABLE public.product
 CREATE TABLE public.units
 (
     id uuid NOT NULL,
-    units_name text COLLATE pg_catalog."default",
+    name text COLLATE pg_catalog."default",
     CONSTRAINT units_pkey PRIMARY KEY (id)
 )
 
