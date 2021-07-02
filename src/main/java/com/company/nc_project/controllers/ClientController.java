@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -38,11 +37,8 @@ public class ClientController {
     }
 
     @DeleteMapping("/{id}")
-    public String deleteClient(@PathVariable(value = "id") UUID clientId) throws EntityNotFoundException {
-
+    public void deleteClient(@PathVariable(value = "id") UUID clientId) {
         clientRepository.deleteById(clientId);
-
-        return "Client with id " + clientId + " deleted";
     }
 
     @ExceptionHandler(EmptyResultDataAccessException.class)

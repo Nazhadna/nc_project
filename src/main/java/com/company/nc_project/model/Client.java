@@ -20,8 +20,8 @@ public class Client {
     @Column(name = "age", nullable = false)
     private Integer age;
 
-    @Column(name = "gender", nullable = false)
-    private Character gender;
+    @Column(name = "gender_id", nullable = false)
+    private UUID genderId;
 
     @Column(name = "email", nullable = false)
     private String email;
