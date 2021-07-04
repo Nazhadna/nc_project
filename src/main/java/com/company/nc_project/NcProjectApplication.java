@@ -17,8 +17,6 @@ public class NcProjectApplication {
     public static void main(String[] args) {
 
         SpringApplication.run(NcProjectApplication.class, args);
-
-        System.out.println("Hello world!");
     }
 
     @Bean

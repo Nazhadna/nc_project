@@ -20,8 +20,9 @@ public class Client {
     @Column(name = "age", nullable = false)
     private Integer age;
 
-    @Column(name = "gender_id", nullable = false)
-    private UUID genderId;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "gender_id", referencedColumnName = "id")
+    private Gender genderId;
 
     @Column(name = "email", nullable = false)
     private String email;
