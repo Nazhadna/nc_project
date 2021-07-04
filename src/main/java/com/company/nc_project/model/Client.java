@@ -22,7 +22,7 @@ public class Client {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "gender_id", referencedColumnName = "id")
-    private Gender genderId;
+    private Gender gender;
 
     @Column(name = "email", nullable = false)
     private String email;
