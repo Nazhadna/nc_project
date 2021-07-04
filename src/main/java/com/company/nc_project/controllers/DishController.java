@@ -1,5 +1,6 @@
 package com.company.nc_project.controllers;
 
+import com.company.nc_project.model.Client;
 import com.company.nc_project.model.Country;
 import com.company.nc_project.model.Dish;
 import com.company.nc_project.repository.DishRepository;
