@@ -1,9 +1,10 @@
 package com.company.nc_project.controllers;
 
+import com.company.nc_project.model.Client;
 import com.company.nc_project.model.StoredItem;
-import com.company.nc_project.model.StoredItemProjection;
 import com.company.nc_project.model.Product;
 import com.company.nc_project.repository.ProductRepository;
+import com.company.nc_project.repository.StoredItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.web.bind.annotation.*;
@@ -17,29 +18,27 @@ public class ProductController {
     @Autowired
     ProductRepository productRepository;
 
+    @Autowired
+    StoredItemRepository storedItemRepository;
+
     @GetMapping("/product")
     public Iterable<Product> getAllProducts() {
         return productRepository.findAll();
     }
 
-
-    @GetMapping("/client/{clientId}/product")
-    public Collection<StoredItemProjection> getClientsProducts(@PathVariable(value = "clientId") UUID clientId){
-        return productRepository.getStoredItems(clientId);
+    @PostMapping("/stored_item")
+    public Iterable<StoredItem> getProductsByClient(@RequestBody Client client) {
+        return storedItemRepository.getAllByClient(client);
     }
 
-    @PostMapping("/client/{clientId}/product/{productId}")
-    public String addProduct(@PathVariable(value = "clientId") UUID clientId,
-                             @PathVariable(value = "productId") UUID productId) {
-        productRepository.addStoredItem(clientId, productId);
-        return "Success";
+    @PostMapping("/add_stored_item")
+    public StoredItem addProduct(@RequestBody StoredItem storedItem) {
+        return storedItemRepository.save(storedItem);
     }
 
     @DeleteMapping("/product/{storedItemId}")
-    public String deleteProduct(@PathVariable(value = "storedItemId") UUID storedItemId) {
-
-        productRepository.deleteStoredItem(storedItemId);
-        return "Product deleted";
+    public void deleteProduct(@PathVariable(value = "storedItemId") UUID storedItemId) {
+        storedItemRepository.deleteById(storedItemId);
     }
 
     @ExceptionHandler(EmptyResultDataAccessException.class)

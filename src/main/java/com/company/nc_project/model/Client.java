@@ -3,6 +3,7 @@ package com.company.nc_project.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity

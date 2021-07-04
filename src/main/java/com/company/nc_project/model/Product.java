@@ -2,10 +2,7 @@ package com.company.nc_project.model;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
@@ -22,8 +19,9 @@ public class Product {
     @Column(name = "lifetime", nullable = false)
     private int lifetime;
 
-    @Column(name = "place", nullable = false)
-    private String place;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "place_id", referencedColumnName = "id")
+    private Place place;
 
     public int getLifetime() {
         return lifetime;
