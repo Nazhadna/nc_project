@@ -1,5 +1,6 @@
 package com.company.nc_project.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -19,7 +20,7 @@ public class Dish{
     @Column(name = "name", nullable = false)
     private String name;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "country_id", referencedColumnName = "id")
     private Country country;
 
@@ -29,4 +30,11 @@ public class Dish{
     @Column(name = "recipe", nullable = false)
     private String recipe;
 
+    @ManyToMany
+    @JoinTable(
+            name = "dish_product",
+            joinColumns = @JoinColumn(name = "dish_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id"))
+    @JsonIgnore
+    Set<Product> products;
 }

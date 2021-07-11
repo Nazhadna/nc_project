@@ -26,18 +26,13 @@ public class ProductController {
         return productRepository.findAll();
     }
 
-    @PostMapping("/stored_item")
-    public Iterable<StoredItem> getProductsByClient(@RequestBody Client client) {
-        return storedItemRepository.getAllByClient(client);
-    }
-
     @PostMapping("/add_stored_item")
-    public StoredItem addProduct(@RequestBody StoredItem storedItem) {
+    public StoredItem addStoredItem(@RequestBody StoredItem storedItem) {
         return storedItemRepository.save(storedItem);
     }
 
     @DeleteMapping("/product/{storedItemId}")
-    public void deleteProduct(@PathVariable(value = "storedItemId") UUID storedItemId) {
+    public void deleteStoredItem(@PathVariable(value = "storedItemId") UUID storedItemId) {
         storedItemRepository.deleteById(storedItemId);
     }
 

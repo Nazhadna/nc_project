@@ -19,7 +19,7 @@ public class Product {
     @Column(name = "lifetime", nullable = false)
     private int lifetime;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "place_id", referencedColumnName = "id")
     private Place place;
 

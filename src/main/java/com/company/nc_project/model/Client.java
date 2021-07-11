@@ -1,5 +1,6 @@
 package com.company.nc_project.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -21,7 +22,7 @@ public class Client {
     @Column(name = "age", nullable = false)
     private Integer age;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "gender_id", referencedColumnName = "id")
     private Gender gender;
 
@@ -30,4 +31,17 @@ public class Client {
 
     @Column(name = "password", nullable = false)
     private String password;
+
+    @ManyToMany
+    @JoinTable(
+            name = "client_dish",
+            joinColumns = @JoinColumn(name = "client_id"),
+            inverseJoinColumns = @JoinColumn(name = "dish_id"))
+    @JsonIgnore
+    private Set<Dish> clientsDishes;
+
+    @OneToMany
+    @JoinColumn(name = "client_id")
+    @JsonIgnore
+    private Set<StoredItem> clientsStoredItems;
 }

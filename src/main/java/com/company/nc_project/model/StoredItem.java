@@ -1,5 +1,6 @@
 package com.company.nc_project.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -15,23 +16,9 @@ public class StoredItem {
     private UUID id = UUID.randomUUID();
 
     @ManyToOne
-    @JoinColumn(name = "client_id")
-    public Client client;
-
-    @ManyToOne
     @JoinColumn(name = "product_id")
-    public Product product;
+    private Product product;
 
     @Column(name = "expiration_date", nullable = false)
     private Date expirationDate;
-
-    @Override
-    public String toString() {
-        return "StoredItem{" +
-                "id=" + id +
-                ", client=" + client.getName() +
-                ", product=" + product.getName() +
-                ", expirationDate=" + expirationDate +
-                '}';
-    }
 }
