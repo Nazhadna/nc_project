@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -40,8 +41,8 @@ public class Client {
     @JsonIgnore
     private Set<Dish> clientsDishes;
 
-    @OneToMany
-    @JoinColumn(name = "client_id")
+    @OneToMany(mappedBy="client")
+    //@JoinColumn(name = "client_id")
     @JsonIgnore
-    private Set<StoredItem> clientsStoredItems;
+    private Set<StoredProduct> clientsStoredProducts = new HashSet<>();
 }

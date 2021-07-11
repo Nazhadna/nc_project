@@ -10,10 +10,14 @@ import java.util.UUID;
 @Entity
 @Table(name = "stored_items")
 @Data
-public class StoredItem {
+public class StoredProduct {
     @Id
     @org.hibernate.annotations.Type(type = "pg-uuid")
     private UUID id = UUID.randomUUID();
+
+    @ManyToOne
+    @JoinColumn(name = "client_id")
+    private Client client;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
