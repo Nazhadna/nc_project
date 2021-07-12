@@ -1,6 +1,7 @@
 package com.company.nc_project.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -17,6 +18,7 @@ public class StoredProduct {
 
     @ManyToOne
     @JoinColumn(name = "client_id")
+    @JsonManagedReference
     //@JsonIgnore
     private Client client;
 

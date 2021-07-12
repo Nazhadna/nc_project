@@ -1,5 +1,6 @@
 package com.company.nc_project.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
@@ -43,6 +44,7 @@ public class Client {
 
     @OneToMany(mappedBy="client")
     //@JoinColumn(name = "client_id")
-    @JsonIgnore
+    @JsonBackReference
+    //@JsonIgnore
     private Set<StoredProduct> clientsStoredProducts;
 }

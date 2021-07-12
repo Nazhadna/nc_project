@@ -27,5 +27,5 @@ public class DishesProduct {
 
     @ManyToOne
     @JoinColumn(name = "units")
-    private Units units;
+    private Unit unit;
 }
