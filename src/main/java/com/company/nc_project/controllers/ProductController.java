@@ -35,6 +35,17 @@ public class ProductController {
         return storedItemRepository.save(storedProduct);
     }
 
+    @PostMapping("/expired_products/{client_id}/by_client")
+    public Set<StoredProduct> getExpiredProduct(@PathVariable(value = "client_id") UUID clientId) {
+        Set<StoredProduct> expiredProduct = new HashSet<>();
+        Client client = clientRepository.findById(clientId).orElseThrow(RuntimeException::new);
+        for (StoredProduct storedProduct:client.getClientsStoredProducts()) {
+            if (storedProduct.getExpirationDate().before(new Date()))
+                expiredProduct.add(storedProduct);
+        }
+        return expiredProduct;
+    }
+
     @DeleteMapping("/{storedProductId}")
     public void deleteStoredProduct(@PathVariable(value = "storedProductId") UUID storedProductId) {
         storedItemRepository.deleteById(storedProductId);
