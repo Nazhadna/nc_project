@@ -1,8 +1,11 @@
 package com.company.nc_project.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -19,7 +22,7 @@ public class Product {
     @Column(name = "lifetime", nullable = false)
     private int lifetime;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "place_id", referencedColumnName = "id")
     private Place place;
 
