@@ -44,5 +44,5 @@ public class Client {
     @OneToMany(mappedBy="client")
     //@JoinColumn(name = "client_id")
     @JsonIgnore
-    private Set<StoredProduct> clientsStoredProducts = new HashSet<>();
+    private Set<StoredProduct> clientsStoredProducts;
 }
