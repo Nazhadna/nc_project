@@ -42,9 +42,9 @@ public class Client {
     @JsonIgnore
     private Set<Dish> clientsDishes;
 
-    @OneToMany(mappedBy="client")
-    //@JoinColumn(name = "client_id")
-    @JsonBackReference
+/*    @OneToMany//(mappedBy="client")
+    @JoinColumn(name = "client_id")
+    //@JsonBackReference
     //@JsonIgnore
-    private Set<StoredProduct> clientsStoredProducts;
+    private Set<StoredProduct> clientsStoredProducts;*/
 }

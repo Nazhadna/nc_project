@@ -4,6 +4,7 @@ import com.company.nc_project.model.*;
 import com.company.nc_project.repository.ClientRepository;
 import com.company.nc_project.repository.ClientsDishRepository;
 import com.company.nc_project.repository.DishRepository;
+import com.company.nc_project.repository.StoredProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,9 @@ public class DishController {
 
     @Autowired
     ClientsDishRepository clientsDishRepository;
+
+    @Autowired
+    StoredProductRepository storedProductRepository;
 
     @GetMapping()
     public Iterable<Dish> getAllDishes() {
@@ -78,18 +82,33 @@ public class DishController {
     public Set<Dish> getAvailableDishesByClient(@PathVariable(value = "client_id") UUID clientId) {
         Set<Dish> availableDishes = new HashSet<>();
         Client client = clientRepository.findById(clientId).orElseThrow(RuntimeException::new);
-        ProductNotFound:
-        for (Dish dish: client.getClientsDishes()) {
-            ProductFound:
-            for (Product product: dish.getProducts()) {
-                for (StoredProduct storedProduct : client.getClientsStoredProducts()) {
-                    if (product.getId() == storedProduct.getProduct().getId())
-                        break ProductFound;
-                }
-                break ProductNotFound;
-            }
-            availableDishes.add(dish);
+        for (Dish dish: client.getClientsDishes())
+            ProductNotFound: {
+                for (Product product: dish.getProducts())
+                    ProductFound: {
+                        for (StoredProduct storedProduct : storedProductRepository.getAllByClient(client)) {
+                            if (product.getId() == storedProduct.getProduct().getId())
+                                break ProductFound;
+                        }
+                        break ProductNotFound;
+                    }
+                availableDishes.add(dish);
         }
+        return availableDishes;
+    }
+
+    @PostMapping("/by_products")
+    public Set<Dish> getDishesByProducts(@RequestBody Set<Product> products) {
+        Set<Dish> availableDishes = new HashSet<>();
+        Iterable<Dish> dishes = dishRepository.findAll();
+        for (Dish dish: dishes)
+            NoProduct:{
+                for (Product product:dish.getProducts()) {
+                    if (!products.contains(product))
+                        break NoProduct;
+                }
+                availableDishes.add(dish);
+            }
         return availableDishes;
     }
 

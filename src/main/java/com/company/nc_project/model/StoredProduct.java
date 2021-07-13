@@ -18,13 +18,11 @@ public class StoredProduct {
 
     @ManyToOne
     @JoinColumn(name = "client_id")
-    @JsonManagedReference
-    //@JsonIgnore
+    @JsonIgnore
     private Client client;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
-    @JsonIgnore
     private Product product;
 
     @Column(name = "expiration_date", nullable = false)

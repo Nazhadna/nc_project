@@ -5,7 +5,7 @@ import com.company.nc_project.model.StoredProduct;
 import com.company.nc_project.model.Product;
 import com.company.nc_project.repository.ClientRepository;
 import com.company.nc_project.repository.ProductRepository;
-import com.company.nc_project.repository.StoredItemRepository;
+import com.company.nc_project.repository.StoredProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +23,7 @@ public class ProductController {
     ProductRepository productRepository;
 
     @Autowired
-    StoredItemRepository storedItemRepository;
+    StoredProductRepository storedProductRepository;
 
     @GetMapping()
     public Iterable<Product> getAllProducts() {
@@ -32,14 +32,14 @@ public class ProductController {
 
     @PostMapping()
     public StoredProduct addStoredProduct(@RequestBody StoredProduct storedProduct) {
-        return storedItemRepository.save(storedProduct);
+        return storedProductRepository.save(storedProduct);
     }
 
     @PostMapping("/expired_products/{client_id}/by_client")
     public Set<StoredProduct> getExpiredProduct(@PathVariable(value = "client_id") UUID clientId) {
         Set<StoredProduct> expiredProduct = new HashSet<>();
         Client client = clientRepository.findById(clientId).orElseThrow(RuntimeException::new);
-        for (StoredProduct storedProduct:client.getClientsStoredProducts()) {
+        for (StoredProduct storedProduct : storedProductRepository.getAllByClient(client)) {
             if (storedProduct.getExpirationDate().before(new Date()))
                 expiredProduct.add(storedProduct);
         }
@@ -48,13 +48,13 @@ public class ProductController {
 
     @DeleteMapping("/{storedProductId}")
     public void deleteStoredProduct(@PathVariable(value = "storedProductId") UUID storedProductId) {
-        storedItemRepository.deleteById(storedProductId);
+        storedProductRepository.deleteById(storedProductId);
     }
 
     @PostMapping("/{client_id}/by_client")
     public Set<StoredProduct> getStoredProductByClient(@PathVariable(value = "client_id") UUID clientId) {
         Client client = clientRepository.findById(clientId).orElseThrow(RuntimeException::new);
-        return client.getClientsStoredProducts();
+        return storedProductRepository.getAllByClient(client);
     }
 
     @ExceptionHandler(EmptyResultDataAccessException.class)
