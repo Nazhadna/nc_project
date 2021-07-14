@@ -5,6 +5,7 @@ import com.company.nc_project.repository.CountryRepository;
 import com.company.nc_project.repository.GenderRepository;
 import com.company.nc_project.repository.PlaceRepository;
 import com.company.nc_project.repository.UnitRepository;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,35 +32,43 @@ public class DictionaryController {
     UnitRepository unitRepository;
 
     @GetMapping("/gender")
+    @ApiOperation(value = "show all genders")
     public Iterable<Gender> getAllGenders() { return genderRepository.findAll(); }
 
     @GetMapping("/gender/{id}")
+    @ApiOperation(value = "get gender by id")
     public Optional<Gender> getGenderById(@PathVariable(value = "id") UUID genderId) {
         return genderRepository.findById(genderId);
     }
 
     @GetMapping("/country")
+    @ApiOperation(value = "show all countries")
     public Iterable<Country> getAllCountries() {
         return countryRepository.findAll();
     }
 
     @GetMapping("/country/{id}")
+    @ApiOperation(value = "get country by id")
     public Optional<Country> getCountryById(@PathVariable(value = "id") UUID countryId) {
         return countryRepository.findById(countryId);
     }
 
     @GetMapping("/place")
+    @ApiOperation(value = "show all places")
     public Iterable<Place> getAllPlaces() { return placeRepository.findAll(); }
 
     @GetMapping("/place/{id}")
+    @ApiOperation(value = "get place by id")
     public Optional<Place> getPlaceById(@PathVariable(value = "id") UUID placeId) {
         return placeRepository.findById(placeId);
     }
 
     @GetMapping("/unit")
+    @ApiOperation(value = "show all units")
     public Iterable<Unit> getAllUnits() { return unitRepository.findAll(); }
 
     @GetMapping("/unit/{id}")
+    @ApiOperation(value = "get unit by id")
     public Optional<Unit> getUnitById(@PathVariable(value = "id") UUID unitId) {
         return unitRepository.findById(unitId);
     }
