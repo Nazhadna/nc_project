@@ -69,6 +69,23 @@ public class DishController {
         return dish.getProducts();
     }
 
+    @PostMapping("/{dish_id}/client/{client_id}/products")
+    @ApiOperation(value = "show products to buy for dish")
+    public Set<Product> getNeededProductsForDishesByClient(@PathVariable(value = "client_id") UUID clientId, @PathVariable(value = "dish_id") UUID dishId) {
+        Client client = clientRepository.findById(clientId).orElseThrow(RuntimeException::new);
+        Dish dish = dishRepository.findById(dishId).orElseThrow(RuntimeException::new);
+        Set<Product> productsToBuy = new HashSet<>();
+        for (Product product:dish.getProducts())
+            ProductFound:{
+                for (StoredProduct storedProduct : storedProductRepository.getAllByClient(client)) {
+                    if (product.getId() == storedProduct.getProduct().getId())
+                        break ProductFound;
+                }
+                productsToBuy.add(product);
+            }
+        return productsToBuy;
+    }
+
     @PostMapping("/country")
     @ApiOperation(value = "show dishes by country")
     public Iterable<Dish> getAllDishesByCountry(@RequestBody Country country) {
