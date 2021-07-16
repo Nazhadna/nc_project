@@ -1,5 +1,6 @@
 package com.company.nc_project.controllers;
 
+import com.company.nc_project.filter.Filter;
 import com.company.nc_project.model.*;
 import com.company.nc_project.repository.ClientRepository;
 import com.company.nc_project.repository.ClientsDishRepository;
@@ -90,6 +91,12 @@ public class DishController {
     @ApiOperation(value = "show dishes by country")
     public Iterable<Dish> getAllDishesByCountry(@RequestBody Country country) {
         return dishRepository.findAllByCountry(country);
+    }
+
+    @PostMapping("/filter")
+    @ApiOperation(value = "show dishes by filter")
+    public Iterable<Dish> getAllDishesByFilter(@RequestBody Filter filter) {
+        return dishRepository.findAllByCountryAndRecipeContaining(filter.getCountry(), filter.getRecipe());
     }
 
     @PostMapping("/client/{client_id}")
