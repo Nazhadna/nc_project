@@ -57,7 +57,7 @@ public class DishController {
 
     @PostMapping("/update")
     @ApiOperation(value = "update dish")
-    public Dish updateDish(@RequestBody Dish dish)  {
+    public Dish updateDish(@RequestBody Dish dish) {
         return dishRepository.save(dish);
     }
 
@@ -80,7 +80,7 @@ public class DishController {
         Client client = clientRepository.findById(clientId).orElseThrow(() -> new EntityNotFoundException("No such client"));
         Dish dish = dishRepository.findById(dishId).orElseThrow(() -> new EntityNotFoundException("No such dish"));
         Set<Product> productsToBuy = new HashSet<>();
-        for (Product product:dish.getProducts())
+        for (Product product : dish.getProducts())
             ProductFound:{
                 for (StoredProduct storedProduct : storedProductRepository.getAllByClient(client)) {
                     if (product.getId() == storedProduct.getProduct().getId())
@@ -99,13 +99,13 @@ public class DishController {
         Client client = clientRepository.findById(clientId).orElseThrow(() -> new EntityNotFoundException("No such client"));
         Dish dish = dishRepository.findById(dishId).orElseThrow(() -> new EntityNotFoundException("No such dish"));
         Set<Product> productsToBuy = new HashSet<>();
-        for (Product product:dish.getProducts()) {
-                for (StoredProduct storedProduct : storedProductRepository.getAllByClient(client)) {
-                    if (product.getId() == storedProduct.getProduct().getId())
-                        break;
-                }
-                productsToBuy.add(product);
+        for (Product product : dish.getProducts()) {
+            for (StoredProduct storedProduct : storedProductRepository.getAllByClient(client)) {
+                if (product.getId() == storedProduct.getProduct().getId())
+                    break;
             }
+            productsToBuy.add(product);
+        }
         return productsToBuy;
     }
 
@@ -140,10 +140,10 @@ public class DishController {
     public Set<Dish> getAvailableDishesByClient(@PathVariable(value = "client_id") UUID clientId) {
         Set<Dish> availableDishes = new HashSet<>();
         Client client = clientRepository.findById(clientId).orElseThrow(() -> new EntityNotFoundException("No such client"));
-        for (Dish dish: client.getClientsDishes())
-            ProductNotFound: {
-                for (Product product: dish.getProducts())
-                    ProductFound: {
+        for (Dish dish : client.getClientsDishes())
+            ProductNotFound:{
+                for (Product product : dish.getProducts())
+                    ProductFound:{
                         for (StoredProduct storedProduct : storedProductRepository.getAllByClient(client)) {
                             if (product.getId() == storedProduct.getProduct().getId())
                                 break ProductFound;
@@ -151,7 +151,7 @@ public class DishController {
                         break ProductNotFound;
                     }
                 availableDishes.add(dish);
-        }
+            }
         return availableDishes;
     }
 
@@ -160,9 +160,9 @@ public class DishController {
     public Set<Dish> getDishesByProducts(@RequestBody Set<Product> products) {
         Set<Dish> availableDishes = new HashSet<>();
         Iterable<Dish> dishes = dishRepository.findAll();
-        for (Dish dish: dishes)
+        for (Dish dish : dishes)
             NoProduct:{
-                for (Product product:dish.getProducts()) {
+                for (Product product : dish.getProducts()) {
                     if (!products.contains(product))
                         break NoProduct;
                 }
