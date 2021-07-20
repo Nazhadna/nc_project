@@ -6,6 +6,7 @@ import com.company.nc_project.repository.ClientRepository;
 import com.company.nc_project.repository.ClientsDishRepository;
 import com.company.nc_project.repository.DishRepository;
 import com.company.nc_project.repository.StoredProductRepository;
+import com.company.nc_project.service.DishService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import javassist.NotFoundException;
@@ -36,6 +37,8 @@ public class DishController {
 
     @Autowired
     StoredProductRepository storedProductRepository;
+
+    DishService dishService = new DishService();
 
     @GetMapping()
     @ApiOperation(value = "show all dishes")
@@ -74,23 +77,6 @@ public class DishController {
         return dish.getProducts();
     }
 
-    @PostMapping("/{dish_id}/client/{client_id}/products/old")
-    @ApiOperation(value = "show products to buy for dish")
-    public Set<Product> getNeededProductsForDishesByClientOld(@PathVariable(value = "client_id") UUID clientId, @PathVariable(value = "dish_id") UUID dishId) {
-        Client client = clientRepository.findById(clientId).orElseThrow(() -> new EntityNotFoundException("No such client"));
-        Dish dish = dishRepository.findById(dishId).orElseThrow(() -> new EntityNotFoundException("No such dish"));
-        Set<Product> productsToBuy = new HashSet<>();
-        for (Product product : dish.getProducts())
-            ProductFound:{
-                for (StoredProduct storedProduct : storedProductRepository.getAllByClient(client)) {
-                    if (product.getId() == storedProduct.getProduct().getId())
-                        break ProductFound;
-                }
-                productsToBuy.add(product);
-            }
-        return productsToBuy;
-    }
-
     @PostMapping("/{dish_id}/client/{client_id}/products")
     @ApiOperation(value = "show products to buy for dish")
     public Set<Product> getNeededProductsForDishesByClient(
@@ -98,15 +84,8 @@ public class DishController {
             @PathVariable(value = "dish_id") UUID dishId) {
         Client client = clientRepository.findById(clientId).orElseThrow(() -> new EntityNotFoundException("No such client"));
         Dish dish = dishRepository.findById(dishId).orElseThrow(() -> new EntityNotFoundException("No such dish"));
-        Set<Product> productsToBuy = new HashSet<>();
-        for (Product product : dish.getProducts()) {
-            for (StoredProduct storedProduct : storedProductRepository.getAllByClient(client)) {
-                if (product.getId() == storedProduct.getProduct().getId())
-                    break;
-            }
-            productsToBuy.add(product);
-        }
-        return productsToBuy;
+        Set<StoredProduct> storedProducts = storedProductRepository.getAllByClient(client);
+        return dishService.getProductsToBuy(dish, storedProducts);
     }
 
     @PostMapping("/country")
@@ -138,37 +117,16 @@ public class DishController {
     @PostMapping("/client/{client_id}/available_dishes")
     @ApiOperation(value = "show client's dishes that client can cook from his products")
     public Set<Dish> getAvailableDishesByClient(@PathVariable(value = "client_id") UUID clientId) {
-        Set<Dish> availableDishes = new HashSet<>();
         Client client = clientRepository.findById(clientId).orElseThrow(() -> new EntityNotFoundException("No such client"));
-        for (Dish dish : client.getClientsDishes())
-            ProductNotFound:{
-                for (Product product : dish.getProducts())
-                    ProductFound:{
-                        for (StoredProduct storedProduct : storedProductRepository.getAllByClient(client)) {
-                            if (product.getId() == storedProduct.getProduct().getId())
-                                break ProductFound;
-                        }
-                        break ProductNotFound;
-                    }
-                availableDishes.add(dish);
-            }
-        return availableDishes;
+        Set<StoredProduct> storedProducts = storedProductRepository.getAllByClient(client);
+        return dishService.getAvailableDishes(client, storedProducts);
     }
 
     @PostMapping("/by_products")
     @ApiOperation(value = "show dishes that can be made from incoming products")
     public Set<Dish> getDishesByProducts(@RequestBody Set<Product> products) {
-        Set<Dish> availableDishes = new HashSet<>();
         Iterable<Dish> dishes = dishRepository.findAll();
-        for (Dish dish : dishes)
-            NoProduct:{
-                for (Product product : dish.getProducts()) {
-                    if (!products.contains(product))
-                        break NoProduct;
-                }
-                availableDishes.add(dish);
-            }
-        return availableDishes;
+        return dishService.getDishesByProducts(dishes, products);
     }
 
     @ExceptionHandler(Exception.class)
