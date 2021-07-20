@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.*;
 
 @RestController
@@ -42,9 +43,10 @@ public class ProductController {
     @ApiOperation(value = "show client's expired products")
     public Set<StoredProduct> getExpiredProduct(@PathVariable(value = "client_id") UUID clientId) {
         Set<StoredProduct> expiredProduct = new HashSet<>();
-        Client client = clientRepository.findById(clientId).orElseThrow(RuntimeException::new);
+        Client client = clientRepository.findById(clientId).orElseThrow(() -> new EntityNotFoundException("No such client"));
+        Date today = new Date();
         for (StoredProduct storedProduct : storedProductRepository.getAllByClient(client)) {
-            if (storedProduct.getExpirationDate().before(new Date()))
+            if (storedProduct.getExpirationDate().before(today))
                 expiredProduct.add(storedProduct);
         }
         return expiredProduct;
@@ -59,7 +61,7 @@ public class ProductController {
     @PostMapping("/{client_id}/by_client")
     @ApiOperation(value = "get client's stored products")
     public Set<StoredProduct> getStoredProductByClient(@PathVariable(value = "client_id") UUID clientId) {
-        Client client = clientRepository.findById(clientId).orElseThrow(RuntimeException::new);
+        Client client = clientRepository.findById(clientId).orElseThrow(() -> new EntityNotFoundException("No such client"));
         return storedProductRepository.getAllByClient(client);
     }
 
