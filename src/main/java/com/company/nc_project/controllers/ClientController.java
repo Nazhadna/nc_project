@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -32,13 +33,13 @@ public class ClientController {
 
     @PostMapping("/update")
     @ApiOperation(value = "update client")
-    public Client updateClient(@RequestBody Client client) {
+    public Client updateClient(@Valid @RequestBody Client client) {
         return clientRepository.save(client);
     }
 
     @PostMapping()
     @ApiOperation(value = "create client")
-    public Client createClient(@RequestBody Client client) {
+    public Client createClient(@Valid @RequestBody Client client) {
         return clientRepository.save(client);
     }
 
@@ -48,8 +49,8 @@ public class ClientController {
         clientRepository.deleteById(clientId);
     }
 
-    @ExceptionHandler(EmptyResultDataAccessException.class)
-    public String handleException(EmptyResultDataAccessException e) {
+    @ExceptionHandler(Exception.class)
+    public String handleException(Exception e) {
         return "error: " + e.getMessage();
     }
 }

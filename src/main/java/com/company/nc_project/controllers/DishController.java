@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityNotFoundException;
+import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -48,7 +49,7 @@ public class DishController {
 
     @PostMapping()
     @ApiOperation(value = "create dish")
-    public Dish createDish(@RequestBody Dish dish) {
+    public Dish createDish(@Valid @RequestBody Dish dish) {
         return dishRepository.save(dish);
     }
 
@@ -60,7 +61,7 @@ public class DishController {
 
     @PostMapping("/update")
     @ApiOperation(value = "update dish")
-    public Dish updateDish(@RequestBody Dish dish) {
+    public Dish updateDish(@Valid @RequestBody Dish dish) {
         return dishRepository.save(dish);
     }
 
