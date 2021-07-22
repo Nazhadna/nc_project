@@ -1,5 +1,6 @@
 package com.company.nc_project.repository;
 
+import com.company.nc_project.filter.Filter;
 import com.company.nc_project.model.Client;
 import com.company.nc_project.model.Country;
 import com.company.nc_project.model.Dish;
@@ -13,5 +14,9 @@ import java.util.UUID;
 public interface DishRepository extends CrudRepository<Dish, UUID> {
     Iterable<Dish> findAllByCountry(Country country);
     Iterable<Dish> findAllByCountryAndRecipeContaining(Country country, String recipe);
-    Set<Dish> getAllByClient(Client client);
+    Set<Dish> getAllByClientContaining(Client client);
+
+    default Iterable<Dish> findAllByFilter(Filter filter){
+        return findAllByCountryAndRecipeContaining(filter.getCountry(), filter.getRecipe());
+    }
 }

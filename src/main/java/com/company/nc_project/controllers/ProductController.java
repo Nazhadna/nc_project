@@ -40,7 +40,7 @@ public class ProductController {
         return productRepository.save(product);
     }
 
-    @PostMapping()
+    @PostMapping("/stored_product")
     @ApiOperation(value = "add stored product")
     public StoredProduct addStoredProduct(@RequestBody StoredProduct storedProduct) {
         return storedProductRepository.save(storedProduct);

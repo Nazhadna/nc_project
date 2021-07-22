@@ -29,13 +29,13 @@ public class Dish{
     @Column(name = "recipe", nullable = false)
     private String recipe;
 
-    @ManyToOne
+    @ManyToMany
     @JoinTable(
             name = "client_dish",
             joinColumns = @JoinColumn(name = "dish_id"),
             inverseJoinColumns = @JoinColumn(name = "client_id"))
     @JsonIgnore
-    private Client client;
+    private Set<Client> client;
 
     @ManyToMany
     @JoinTable(
