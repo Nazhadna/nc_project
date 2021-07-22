@@ -78,17 +78,6 @@ public class DishController {
         return dish.getProducts();
     }
 
-    @PostMapping("/{dish_id}/client/{client_id}/products")
-    @ApiOperation(value = "show products to buy for dish")
-    public Set<Product> getNeededProductsForDishesByClient(
-            @PathVariable(value = "client_id") UUID clientId,
-            @PathVariable(value = "dish_id") UUID dishId) {
-        Client client = clientRepository.findById(clientId).orElseThrow(() -> new EntityNotFoundException("No such client"));
-        Dish dish = dishRepository.findById(dishId).orElseThrow(() -> new EntityNotFoundException("No such dish"));
-        Set<StoredProduct> storedProducts = storedProductRepository.getAllByClient(client);
-        return dishService.getProductsToBuy(dish, storedProducts);
-    }
-
     @PostMapping("/country")
     @ApiOperation(value = "show dishes by country")
     public Iterable<Dish> getAllDishesByCountry(@RequestBody Country country) {

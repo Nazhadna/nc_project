@@ -72,6 +72,14 @@ public class ProductController {
         return storedProductRepository.getAllByClient(client);
     }
 
+    @PostMapping("/client/{client_id}/dish/{dish_id}")
+    @ApiOperation(value = "show products to buy for dish")
+    public Set<Product> getNeededProductsForDishesByClient(
+            @PathVariable(value = "client_id") UUID clientId,
+            @PathVariable(value = "dish_id") UUID dishId) {
+        return productRepository.getNeededProducts(clientId, dishId);
+    }
+
     @ExceptionHandler(EmptyResultDataAccessException.class)
     public String handleException(EmptyResultDataAccessException e) {
         return "error: " + e.getMessage();

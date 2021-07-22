@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @Entity
-@Table(name = "stored_items")
+@Table(name = "stored_product")
 @Data
 public class StoredProduct {
     @Id

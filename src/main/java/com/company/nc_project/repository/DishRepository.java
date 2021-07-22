@@ -4,6 +4,7 @@ import com.company.nc_project.filter.Filter;
 import com.company.nc_project.model.Client;
 import com.company.nc_project.model.Country;
 import com.company.nc_project.model.Dish;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
