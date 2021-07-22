@@ -1,6 +1,7 @@
 package com.company.nc_project.controllers;
 
 import com.company.nc_project.model.Client;
+import com.company.nc_project.model.Dish;
 import com.company.nc_project.model.StoredProduct;
 import com.company.nc_project.model.Product;
 import com.company.nc_project.repository.ClientRepository;
@@ -31,6 +32,12 @@ public class ProductController {
     @ApiOperation(value = "show all products")
     public Iterable<Product> getAllProducts() {
         return productRepository.findAll();
+    }
+
+    @PostMapping()
+    @ApiOperation(value = "create product")
+    public Product createDish(@RequestBody Product product) {
+        return productRepository.save(product);
     }
 
     @PostMapping()
