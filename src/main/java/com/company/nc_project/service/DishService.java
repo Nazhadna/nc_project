@@ -26,9 +26,9 @@ public class DishService {
         return productsToBuy;
     }
 
-    public Set<Dish> getAvailableDishes(Client client, Set<StoredProduct> storedProducts) {
+    public Set<Dish> getAvailableDishes(Set<Dish> dishes, Set<StoredProduct> storedProducts) {
         Set<Dish> availableDishes = new HashSet<>();
-        for (Dish dish : client.getClientsDishes())
+        for (Dish dish : dishes)
             ProductNotFound:{
                 for (Product product : dish.getProducts())
                     ProductFound:{

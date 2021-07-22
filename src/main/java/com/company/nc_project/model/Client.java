@@ -33,18 +33,4 @@ public class Client {
 
     @Column(name = "password", nullable = false)
     private String password;
-
-    @ManyToMany
-    @JoinTable(
-            name = "client_dish",
-            joinColumns = @JoinColumn(name = "client_id"),
-            inverseJoinColumns = @JoinColumn(name = "dish_id"))
-    @JsonIgnore
-    private Set<Dish> clientsDishes;
-
-/*    @OneToMany//(mappedBy="client")
-    @JoinColumn(name = "client_id")
-    //@JsonBackReference
-    //@JsonIgnore
-    private Set<StoredProduct> clientsStoredProducts;*/
 }

@@ -104,7 +104,7 @@ public class DishController {
     @ApiOperation(value = "show client's dishes")
     public Set<Dish> getSavedDishesByClient(@PathVariable(value = "client_id") UUID clientId) {
         Client client = clientRepository.findById(clientId).orElseThrow(() -> new EntityNotFoundException("No such client"));
-        return client.getClientsDishes();
+        return dishRepository.getAllByClient(client);
     }
 
     @PostMapping("/{dish_id}/client/{client_id}")
@@ -119,7 +119,7 @@ public class DishController {
     public Set<Dish> getAvailableDishesByClient(@PathVariable(value = "client_id") UUID clientId) {
         Client client = clientRepository.findById(clientId).orElseThrow(() -> new EntityNotFoundException("No such client"));
         Set<StoredProduct> storedProducts = storedProductRepository.getAllByClient(client);
-        return dishService.getAvailableDishes(client, storedProducts);
+        return dishService.getAvailableDishes(dishRepository.getAllByClient(client), storedProducts);
     }
 
     @PostMapping("/by_products")
