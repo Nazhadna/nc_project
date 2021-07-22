@@ -13,10 +13,10 @@ import java.util.UUID;
 @Repository
 public interface DishRepository extends CrudRepository<Dish, UUID> {
     Iterable<Dish> findAllByCountry(Country country);
-    Iterable<Dish> findAllByCountryAndRecipeContaining(Country country, String recipe);
+    Iterable<Dish> findAllByCountryAndRecipeContainingAndAndCaloriesIsLessThan(Country country, String recipe, Integer calories);
     Set<Dish> getAllByClientContaining(Client client);
 
     default Iterable<Dish> findAllByFilter(Filter filter){
-        return findAllByCountryAndRecipeContaining(filter.getCountry(), filter.getRecipe());
+        return findAllByCountryAndRecipeContainingAndAndCaloriesIsLessThan(filter.getCountry(), filter.getRecipe(), filter.getCalories());
     }
 }

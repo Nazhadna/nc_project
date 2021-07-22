@@ -31,6 +31,9 @@ public class Dish{
     @Column(name = "recipe", nullable = false)
     private String recipe;
 
+    @Column(name = "calories", nullable = false)
+    private Integer calories;
+
     @ManyToMany
     @JoinTable(
             name = "client_dish",
