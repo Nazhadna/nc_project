@@ -34,6 +34,9 @@ public class Dish{
     @Column(name = "calories", nullable = false)
     private Integer calories;
 
+    @Column(name = "picture", nullable = false)
+    private String picture;
+
     @ManyToMany
     @JoinTable(
             name = "client_dish",
