@@ -1,10 +1,8 @@
 package com.company.nc_project.service;
 
-import com.company.nc_project.model.Client;
 import com.company.nc_project.model.Dish;
 import com.company.nc_project.model.Product;
 import com.company.nc_project.model.StoredProduct;
-import org.aspectj.apache.bcel.generic.InstructionConstants;
 
 import java.util.HashSet;
 import java.util.Set;

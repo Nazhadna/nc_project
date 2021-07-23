@@ -7,6 +7,7 @@ import com.company.nc_project.model.Product;
 import com.company.nc_project.repository.ClientRepository;
 import com.company.nc_project.repository.ProductRepository;
 import com.company.nc_project.repository.StoredProductRepository;
+import com.company.nc_project.service.ProductService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -27,6 +28,8 @@ public class ProductController {
 
     @Autowired
     StoredProductRepository storedProductRepository;
+
+    ProductService productService = new ProductService();
 
     @GetMapping()
     @ApiOperation(value = "show all products")
@@ -49,14 +52,9 @@ public class ProductController {
     @PostMapping("/expired_products/{client_id}/by_client")
     @ApiOperation(value = "show client's expired products")
     public Set<StoredProduct> getExpiredProduct(@PathVariable(value = "client_id") UUID clientId) {
-        Set<StoredProduct> expiredProduct = new HashSet<>();
         Client client = clientRepository.findById(clientId).orElseThrow(() -> new EntityNotFoundException("No such client"));
-        Date today = new Date();
-        for (StoredProduct storedProduct : storedProductRepository.getAllByClient(client)) {
-            if (storedProduct.getExpirationDate().before(today))
-                expiredProduct.add(storedProduct);
-        }
-        return expiredProduct;
+        Set<StoredProduct> storedProducts = storedProductRepository.getAllByClient(client);
+        return productService.getStoredProduct(storedProducts);
     }
 
     @DeleteMapping("/{storedProductId}")
