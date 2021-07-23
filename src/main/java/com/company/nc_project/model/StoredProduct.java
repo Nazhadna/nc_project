@@ -27,4 +27,7 @@ public class StoredProduct {
 
     @Column(name = "expiration_date", nullable = false)
     private Date expirationDate;
+
+    @Column(name = "quantity", nullable = false)
+    private double quantity;
 }

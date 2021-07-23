@@ -24,8 +24,4 @@ public class DishesProduct {
 
     @Column(name = "quantity", nullable = false)
     private double quantity;
-
-    @ManyToOne
-    @JoinColumn(name = "units")
-    private Unit unit;
 }

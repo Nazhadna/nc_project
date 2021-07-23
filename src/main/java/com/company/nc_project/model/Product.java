@@ -25,6 +25,10 @@ public class Product {
     @NotEmpty
     private Integer lifetime;
 
+    @ManyToOne
+    @JoinColumn(name = "units_id")
+    private Unit unit;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "place_id", referencedColumnName = "id")
     private Place place;
