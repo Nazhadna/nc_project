@@ -12,7 +12,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "units")
 @Data
-public class Units {
+public class Unit {
 
     @Id
     @org.hibernate.annotations.Type(type = "pg-uuid")

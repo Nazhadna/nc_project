@@ -1,6 +1,7 @@
 package com.company.nc_project.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -8,7 +9,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @Entity
-@Table(name = "stored_items")
+@Table(name = "stored_product")
 @Data
 public class StoredProduct {
     @Id
@@ -17,14 +18,16 @@ public class StoredProduct {
 
     @ManyToOne
     @JoinColumn(name = "client_id")
-    //@JsonIgnore
+    @JsonIgnore
     private Client client;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
-    @JsonIgnore
     private Product product;
 
     @Column(name = "expiration_date", nullable = false)
     private Date expirationDate;
+
+    @Column(name = "quantity", nullable = false)
+    private double quantity;
 }
