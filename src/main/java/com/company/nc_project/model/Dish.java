@@ -52,4 +52,19 @@ public class Dish{
             inverseJoinColumns = @JoinColumn(name = "product_id"))
     @JsonIgnore
     Set<Product> products;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Dish dish = (Dish) o;
+
+        return id.equals(dish.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
 }

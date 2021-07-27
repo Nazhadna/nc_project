@@ -4,38 +4,21 @@ import com.company.nc_project.model.Dish;
 import com.company.nc_project.model.Product;
 import com.company.nc_project.model.StoredProduct;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class DishService {
 
     public Set<Dish> getAvailableDishes(Set<Dish> dishes, Set<StoredProduct> storedProducts) {
-        Set<Dish> availableDishes = new HashSet<>();
-        for (Dish dish : dishes)
-            ProductNotFound:{
-                for (Product product : dish.getProducts())
-                    ProductFound:{
-                        for (StoredProduct storedProduct : storedProducts) {
-                            if (product.getId() == storedProduct.getProduct().getId())
-                                break ProductFound;
-                        }
-                        break ProductNotFound;
-                    }
-                availableDishes.add(dish);
-            }
+        Set<Product> clientsProducts = storedProducts.stream().map(StoredProduct::getProduct).collect(Collectors.toSet());
+        Set<Dish> availableDishes = dishes.stream()
+                .filter(dish -> clientsProducts.containsAll(dish.getProducts())).collect(Collectors.toSet());
         return availableDishes;
     }
 
-    public Set<Dish> getDishesByProducts(Iterable<Dish> dishes, Set<Product> products){
-        Set<Dish> availableDishes = new HashSet<>();
-        for (Dish dish : dishes)
-            NoProduct:{
-                for (Product product : dish.getProducts()) {
-                    if (!products.contains(product))
-                        break NoProduct;
-                }
-                availableDishes.add(dish);
-            }
+    public Set<Dish> getDishesByProducts(Set<Dish> dishes, Set<Product> products){
+        Set<Dish> availableDishes = dishes.stream()
+                .filter(dish -> products.containsAll(dish.getProducts())).collect(Collectors.toSet());
         return availableDishes;
     }
 }

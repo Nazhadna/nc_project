@@ -18,10 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.persistence.Entity;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/dish")
@@ -104,18 +101,26 @@ public class DishController {
         clientsDishRepository.save(new ClientsDish(client, dishRepository.findById(dishId).orElseThrow(() -> new EntityNotFoundException("No such dish"))));
     }
 
-    @PostMapping("/client/{client_id}/available_dishes")
+    @PostMapping("/client/{client_id}/liked_available_dishes")
     @ApiOperation(value = "show client's dishes that client can cook from his products")
-    public Set<Dish> getAvailableDishesByClient(@PathVariable(value = "client_id") UUID clientId) {
+    public Set<Dish> getLikedAvailableDishesByClient(@PathVariable(value = "client_id") UUID clientId) {
         Client client = clientRepository.findById(clientId).orElseThrow(() -> new EntityNotFoundException("No such client"));
         Set<StoredProduct> storedProducts = storedProductRepository.getAllByClient(client);
         return dishService.getAvailableDishes(dishRepository.getAllByClientContaining(client), storedProducts);
     }
 
+    @PostMapping("/client/{client_id}/all_available_dishes")
+    @ApiOperation(value = "show all dishes that client can cook from his products")
+    public Set<Dish> getAllAvailableDishesByClient(@PathVariable(value = "client_id") UUID clientId) {
+        Client client = clientRepository.findById(clientId).orElseThrow(() -> new EntityNotFoundException("No such client"));
+        Set<StoredProduct> storedProducts = storedProductRepository.getAllByClient(client);
+        return dishService.getAvailableDishes(dishRepository.findAll(), storedProducts);
+    }
+
     @PostMapping("/by_products")
     @ApiOperation(value = "show dishes that can be made from incoming products")
     public Set<Dish> getDishesByProducts(@RequestBody Set<Product> products) {
-        Iterable<Dish> dishes = dishRepository.findAll();
+        Set<Dish> dishes = dishRepository.findAll();
         return dishService.getDishesByProducts(dishes, products);
     }
 

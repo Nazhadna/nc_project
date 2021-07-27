@@ -33,6 +33,21 @@ public class Product {
     @JoinColumn(name = "place_id", referencedColumnName = "id")
     private Place place;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Product product = (Product) o;
+
+        return id.equals(product.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
     public int getLifetime() {
         return lifetime;
     }
