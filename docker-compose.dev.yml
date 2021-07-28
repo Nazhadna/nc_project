@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+  nc-project:
+    build:
+      context: .
+    ports:
+      - 8000:8000
+      - 8080:8080
+    volumes:
+      - ./:/app
+    command: ./mvnw spring-boot:run -Dspring-boot.run.profiles=docker -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000"
+
+  postgree:
+    image: postgres
+    environment:
+      POSTGRES_DB: cooking
+      POSTGRES_PASSWORD: 11
+    volumes:
+      - postgree_data:/var/lib/postgresql/data
+
+volumes:
+  postgree_data:
