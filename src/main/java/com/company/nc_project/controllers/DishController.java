@@ -7,15 +7,10 @@ import com.company.nc_project.repository.ClientsDishRepository;
 import com.company.nc_project.repository.DishRepository;
 import com.company.nc_project.repository.StoredProductRepository;
 import com.company.nc_project.service.DishService;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import javassist.NotFoundException;
-import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.Entity;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.util.*;
@@ -101,20 +96,14 @@ public class DishController {
         clientsDishRepository.save(new ClientsDish(client, dishRepository.findById(dishId).orElseThrow(() -> new EntityNotFoundException("No such dish"))));
     }
 
-    @PostMapping("/client/{client_id}/liked_available_dishes")
-    @ApiOperation(value = "show client's dishes that client can cook from his products")
-    public Set<Dish> getLikedAvailableDishesByClient(@PathVariable(value = "client_id") UUID clientId) {
+    @PostMapping("/client/{client_id}/available_dishes/{all_dishes?}")
+    @ApiOperation(value = "show client's (or all) dishes that client can cook from his products")
+    public Set<Dish> getAvailableDishesByClient(@PathVariable(value = "client_id") UUID clientId,
+                                                @PathVariable(value = "all_dishes?") boolean allDishes) {
         Client client = clientRepository.findById(clientId).orElseThrow(() -> new EntityNotFoundException("No such client"));
         Set<StoredProduct> storedProducts = storedProductRepository.getAllByClient(client);
-        return dishService.getAvailableDishes(dishRepository.getAllByClientContaining(client), storedProducts);
-    }
-
-    @PostMapping("/client/{client_id}/all_available_dishes")
-    @ApiOperation(value = "show all dishes that client can cook from his products")
-    public Set<Dish> getAllAvailableDishesByClient(@PathVariable(value = "client_id") UUID clientId) {
-        Client client = clientRepository.findById(clientId).orElseThrow(() -> new EntityNotFoundException("No such client"));
-        Set<StoredProduct> storedProducts = storedProductRepository.getAllByClient(client);
-        return dishService.getAvailableDishes(dishRepository.findAll(), storedProducts);
+        return (allDishes) ? dishService.getAvailableDishes(dishRepository.findAll(), storedProducts)
+                : dishService.getAvailableDishes(dishRepository.getAllByClientContaining(client), storedProducts);
     }
 
     @PostMapping("/by_products")
@@ -129,5 +118,3 @@ public class DishController {
         return "error: " + e.getMessage();
     }
 }
-
-
