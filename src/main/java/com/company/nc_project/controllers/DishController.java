@@ -84,7 +84,7 @@ public class DishController {
 
     @PostMapping("/client/{client_id}")
     @ApiOperation(value = "show client's dishes")
-    public Set<Dish> getSavedDishesByClient(@PathVariable(value = "client_id") UUID clientId) {
+    public Collection<Dish> getSavedDishesByClient(@PathVariable(value = "client_id") UUID clientId) {
         Client client = clientRepository.findById(clientId).orElseThrow(() -> new EntityNotFoundException("No such client"));
         return dishRepository.getAllByClientContaining(client);
     }
@@ -109,7 +109,7 @@ public class DishController {
     @PostMapping("/by_products")
     @ApiOperation(value = "show dishes that can be made from incoming products")
     public Set<Dish> getDishesByProducts(@RequestBody Set<Product> products) {
-        Set<Dish> dishes = dishRepository.findAll();
+        Collection<Dish> dishes = dishRepository.findAll();
         return dishService.getDishesByProducts(dishes, products);
     }
 

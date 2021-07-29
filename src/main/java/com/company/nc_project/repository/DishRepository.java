@@ -8,20 +8,21 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.Set;
 import java.util.UUID;
 
 @Repository
 public interface DishRepository extends CrudRepository<Dish, UUID> {
-    Set<Dish> findAll();
+    Collection<Dish> findAll();
 
-    Set<Dish> findAllByCountry(Country country);
+    Collection<Dish> findAllByCountry(Country country);
 
-    Set<Dish> findAllByCountryAndRecipeContainingAndAndCaloriesIsLessThan(Country country, String recipe, Integer calories);
+    Collection<Dish> findAllByCountryAndRecipeContainingAndCaloriesIsLessThan(Country country, String recipe, Integer calories);
 
-    Set<Dish> getAllByClientContaining(Client client);
+    Collection<Dish> getAllByClientContaining(Client client);
 
-    default Set<Dish> findAllByFilter(Filter filter){
-        return findAllByCountryAndRecipeContainingAndAndCaloriesIsLessThan(filter.getCountry(), filter.getRecipe(), filter.getCalories());
+    default Collection<Dish> findAllByFilter(Filter filter){
+        return findAllByCountryAndRecipeContainingAndCaloriesIsLessThan(filter.getCountry(), filter.getRecipe(), filter.getCalories());
     }
 }
