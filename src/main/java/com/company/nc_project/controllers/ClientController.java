@@ -21,24 +21,28 @@ public class ClientController {
 
     @GetMapping()
     @ApiOperation(value = "show all clients")
+    @PreAuthorize("hasAuthority('read')")
     public Iterable<Client> getAllClients() {
         return clientRepository.findAll();
     }
 
     @GetMapping("/{id}")
     @ApiOperation(value = "get client by id")
+    @PreAuthorize("hasAuthority('read')")
     public Optional<Client> getClientById(@PathVariable(value = "id") UUID clientId) {
         return clientRepository.findById(clientId);
     }
 
     @PostMapping("/update")
     @ApiOperation(value = "update client")
+    @PreAuthorize("hasAuthority('read')")
     public Client updateClient(@Valid @RequestBody Client client) {
         return clientRepository.save(client);
     }
 
     @PostMapping()
     @ApiOperation(value = "create client")
+    @PreAuthorize("hasAuthority('read')")
     public Client createClient(@Valid @RequestBody Client client) {
         return clientRepository.save(client);
     }
