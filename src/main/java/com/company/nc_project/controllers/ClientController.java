@@ -5,7 +5,7 @@ import com.company.nc_project.repository.ClientRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -45,6 +45,7 @@ public class ClientController {
 
     @DeleteMapping("/{id}")
     @ApiOperation(value = "delete client")
+    @PreAuthorize("hasAuthority('write')")
     public void deleteClient(@PathVariable(value = "id") UUID clientId) {
         clientRepository.deleteById(clientId);
     }

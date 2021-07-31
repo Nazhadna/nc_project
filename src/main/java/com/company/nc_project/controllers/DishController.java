@@ -9,6 +9,7 @@ import com.company.nc_project.repository.StoredProductRepository;
 import com.company.nc_project.service.DishService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
@@ -59,6 +60,7 @@ public class DishController {
 
     @DeleteMapping("/{id}")
     @ApiOperation(value = "delete dish")
+    @PreAuthorize("hasAuthority('write')")
     public void deleteDish(@PathVariable(value = "id") UUID dishId) {
         dishRepository.deleteById(dishId);
     }

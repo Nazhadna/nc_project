@@ -43,4 +43,9 @@ public class Client {
     @Column(name = "password", nullable = false)
     @NotEmpty
     private String password;
+
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    @NotEmpty
+    private Role role;
 }
