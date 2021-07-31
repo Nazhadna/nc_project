@@ -21,7 +21,7 @@ public class Dish{
     @NotEmpty
     private String name;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "country_id", referencedColumnName = "id")
     private Country country;
 

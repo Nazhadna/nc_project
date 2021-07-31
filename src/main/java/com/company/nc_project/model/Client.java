@@ -31,7 +31,7 @@ public class Client {
     @Min(14)
     private Integer age;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "gender_id", referencedColumnName = "id")
     private Gender gender;
 
@@ -46,6 +46,5 @@ public class Client {
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "role", nullable = false)
-    @NotEmpty
     private Role role;
 }

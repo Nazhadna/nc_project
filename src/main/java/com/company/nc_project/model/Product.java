@@ -29,7 +29,7 @@ public class Product {
     @JoinColumn(name = "units_id")
     private Unit unit;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "place_id", referencedColumnName = "id")
     private Place place;
 
