@@ -1,5 +1,6 @@
 package com.company.nc_project.controllers;
 
+import com.company.nc_project.config.SecurityConfig;
 import com.company.nc_project.filter.Filter;
 import com.company.nc_project.model.*;
 import com.company.nc_project.repository.ClientRepository;
@@ -36,24 +37,28 @@ public class DishController {
 
     @GetMapping()
     @ApiOperation(value = "show all dishes")
+    @PreAuthorize("hasAuthority('read')")
     public Iterable<Dish> getAllDishes() {
         return dishRepository.findAll();
     }
 
     @PostMapping()
     @ApiOperation(value = "create dish")
+    @PreAuthorize("hasAuthority('read')")
     public Dish createDish(@Valid @RequestBody Dish dish) {
         return dishRepository.save(dish);
     }
 
     @GetMapping("/{id}")
     @ApiOperation(value = "get dish by id")
+    @PreAuthorize("hasAuthority('read')")
     public Optional<Dish> getDish(@PathVariable(value = "id") UUID dishId) {
         return dishRepository.findById(dishId);
     }
 
     @PostMapping("/update")
     @ApiOperation(value = "update dish")
+
     public Dish updateDish(@Valid @RequestBody Dish dish) {
         return dishRepository.save(dish);
     }
@@ -67,6 +72,7 @@ public class DishController {
 
     @GetMapping("/{id}/products")
     @ApiOperation(value = "show products from dish")
+    @PreAuthorize("hasAuthority('read')")
     public Set<Product> getProductsByDish(@PathVariable(value = "id") UUID dishId) {
         Dish dish = dishRepository.findById(dishId).orElseThrow(() -> new EntityNotFoundException("No such dish"));
         return dish.getProducts();
@@ -74,18 +80,21 @@ public class DishController {
 
     @PostMapping("/country")
     @ApiOperation(value = "show dishes by country")
+    @PreAuthorize("hasAuthority('read')")
     public Iterable<Dish> getAllDishesByCountry(@RequestBody Country country) {
         return dishRepository.findAllByCountry(country);
     }
 
     @PostMapping("/filter")
     @ApiOperation(value = "show dishes by filter")
+    @PreAuthorize("hasAuthority('read')")
     public Iterable<Dish> getAllDishesByFilter(@RequestBody Filter filter) {
         return dishRepository.findAllByFilter(filter);
     }
 
     @PostMapping("/client/{client_id}")
     @ApiOperation(value = "show client's dishes")
+    @PreAuthorize("hasAuthority('read')")
     public Collection<Dish> getSavedDishesByClient(@PathVariable(value = "client_id") UUID clientId) {
         Client client = clientRepository.findById(clientId).orElseThrow(() -> new EntityNotFoundException("No such client"));
         return dishRepository.getAllByClientContaining(client);
@@ -93,6 +102,7 @@ public class DishController {
 
     @PostMapping("/{dish_id}/client/{client_id}")
     @ApiOperation(value = "save dish for client")
+    @PreAuthorize("hasAuthority('read')")
     public void saveDishForClient(@PathVariable(value = "dish_id") UUID dishId, @PathVariable(value = "client_id") UUID clientId) {
         Client client = clientRepository.findById(clientId).orElseThrow(() -> new EntityNotFoundException("No such client"));
         clientsDishRepository.save(new ClientsDish(client, dishRepository.findById(dishId).orElseThrow(() -> new EntityNotFoundException("No such dish"))));
@@ -100,6 +110,7 @@ public class DishController {
 
     @PostMapping("/client/{client_id}/available_dishes/{all_dishes?}")
     @ApiOperation(value = "show client's (or all) dishes that client can cook from his products")
+    @PreAuthorize("hasAuthority('read')")
     public Set<Dish> getAvailableDishesByClient(@PathVariable(value = "client_id") UUID clientId,
                                                 @PathVariable(value = "all_dishes?") boolean allDishes) {
         Client client = clientRepository.findById(clientId).orElseThrow(() -> new EntityNotFoundException("No such client"));
@@ -110,6 +121,7 @@ public class DishController {
 
     @PostMapping("/by_products")
     @ApiOperation(value = "show dishes that can be made from incoming products")
+    @PreAuthorize("hasAuthority('read')")
     public Set<Dish> getDishesByProducts(@RequestBody Set<Product> products) {
         Collection<Dish> dishes = dishRepository.findAll();
         return dishService.getDishesByProducts(dishes, products);
