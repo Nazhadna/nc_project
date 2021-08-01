@@ -11,13 +11,13 @@ import java.util.Collection;
 import java.util.List;
 
 @Data
-public class SecurityUser implements UserDetails {
+public class JwtUser implements UserDetails {
 
     private final String username;
     private final String password;
     private final List<SimpleGrantedAuthority> authorities;
 
-    public SecurityUser(String username, String password, List<SimpleGrantedAuthority> authorities) {
+    public JwtUser(String username, String password, List<SimpleGrantedAuthority> authorities) {
         this.username = username;
         this.password = password;
         this.authorities = authorities;

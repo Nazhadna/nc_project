@@ -3,11 +3,13 @@ package com.company.nc_project.service;
 import com.company.nc_project.model.Dish;
 import com.company.nc_project.model.Product;
 import com.company.nc_project.model.StoredProduct;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Service
 public class DishService {
 
     public Set<Dish> getAvailableDishes(Collection<Dish> dishes, Set<StoredProduct> storedProducts) {

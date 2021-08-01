@@ -2,10 +2,10 @@ package com.company.nc_project.controllers;
 
 import com.company.nc_project.model.Client;
 import com.company.nc_project.repository.ClientRepository;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,6 +18,14 @@ public class ClientController {
 
     @Autowired
     ClientRepository clientRepository;
+
+    /*@Autowired
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    public ClientController(BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }*/
+
 
     @GetMapping()
     @ApiOperation(value = "show all clients")
@@ -44,6 +52,7 @@ public class ClientController {
     @ApiOperation(value = "create client")
     @PreAuthorize("hasAuthority('read')")
     public Client createClient(@Valid @RequestBody Client client) {
+        //client.setPassword(bCryptPasswordEncoder.encode(client.getPassword()));
         return clientRepository.save(client);
     }
 
