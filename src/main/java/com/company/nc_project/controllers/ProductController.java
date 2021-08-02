@@ -7,6 +7,7 @@ import com.company.nc_project.model.Product;
 import com.company.nc_project.repository.ClientRepository;
 import com.company.nc_project.repository.ProductRepository;
 import com.company.nc_project.repository.StoredProductRepository;
+import com.company.nc_project.service.ClientService;
 import com.company.nc_project.service.ProductService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @RestController
@@ -31,58 +33,60 @@ public class ProductController {
     StoredProductRepository storedProductRepository;
 
     ProductService productService = new ProductService();
+    ClientService clientService = new ClientService();
 
     @GetMapping()
     @ApiOperation(value = "show all products")
-    @PreAuthorize("hasAuthority('read')")
+    @PreAuthorize("hasAuthority('all')")
     public Iterable<Product> getAllProducts() {
         return productRepository.findAll();
     }
 
     @PostMapping()
     @ApiOperation(value = "create product")
-    @PreAuthorize("hasAuthority('read')")
+    @PreAuthorize("hasAuthority('for_admin')")
     public Product createDish(@RequestBody Product product) {
         return productRepository.save(product);
     }
 
     @PostMapping("/stored_product")
     @ApiOperation(value = "add stored product")
-    @PreAuthorize("hasAuthority('read')")
+    @PreAuthorize("hasAuthority('for_user')")
     public StoredProduct addStoredProduct(@RequestBody StoredProduct storedProduct) {
         return storedProductRepository.save(storedProduct);
     }
 
-    @PostMapping("/expired_products/{client_id}/by_client")
+    @PostMapping("/expired_products/by_client")
     @ApiOperation(value = "show client's expired products")
-    @PreAuthorize("hasAuthority('read')")
-    public Set<StoredProduct> getExpiredProduct(@PathVariable(value = "client_id") UUID clientId) {
-        Client client = clientRepository.findById(clientId).orElseThrow(() -> new EntityNotFoundException("No such client"));
+    @PreAuthorize("hasAuthority('for_user')")
+    public Set<StoredProduct> getExpiredProduct(HttpServletRequest request) {
+        Client client = clientService.getClientFromRequest(request);
         Set<StoredProduct> storedProducts = storedProductRepository.getAllByClient(client);
         return productService.getStoredProduct(storedProducts);
     }
 
     @DeleteMapping("/{storedProductId}")
     @ApiOperation(value = "delete stored product")
-    @PreAuthorize("hasAuthority('read')")
+    @PreAuthorize("hasAuthority('for_user')")
     public void deleteStoredProduct(@PathVariable(value = "storedProductId") UUID storedProductId) {
         storedProductRepository.deleteById(storedProductId);
     }
 
     @PostMapping("/{client_id}/by_client")
     @ApiOperation(value = "get client's stored products")
-    @PreAuthorize("hasAuthority('read')")
-    public Set<StoredProduct> getStoredProductByClient(@PathVariable(value = "client_id") UUID clientId) {
-        Client client = clientRepository.findById(clientId).orElseThrow(() -> new EntityNotFoundException("No such client"));
+    @PreAuthorize("hasAuthority('for_user')")
+    public Set<StoredProduct> getStoredProductByClient(HttpServletRequest request) {
+        Client client = clientService.getClientFromRequest(request);
         return storedProductRepository.getAllByClient(client);
     }
 
-    @PostMapping("/client/{client_id}/dish/{dish_id}")
+    @PostMapping("/dish/{dish_id}")
     @ApiOperation(value = "show products to buy for dish")
-    @PreAuthorize("hasAuthority('read')")
+    @PreAuthorize("hasAuthority('for_user')")
     public Set<Product> getNeededProductsForDishesByClient(
-            @PathVariable(value = "client_id") UUID clientId,
+            HttpServletRequest request,
             @PathVariable(value = "dish_id") UUID dishId) {
+        UUID clientId = clientService.getClientFromRequest(request).getId();
         return productRepository.getNeededProducts(clientId, dishId);
     }
 

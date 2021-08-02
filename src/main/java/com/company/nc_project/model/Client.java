@@ -46,5 +46,5 @@ public class Client {
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "role", nullable = false)
-    private Role role;
+    private Role role = Role.USER;
 }

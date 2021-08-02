@@ -10,8 +10,8 @@ import java.util.stream.Collectors;
 
 public enum Role {
 
-    USER(new HashSet<>(Arrays.asList(Permission.READ))),
-    ADMIN(new HashSet<>(Arrays.asList(Permission.READ, Permission.WRITE)));
+    USER(new HashSet<>(Arrays.asList(Permission.READ, Permission.WRITE))),
+    ADMIN(new HashSet<>(Arrays.asList(Permission.READ, Permission.UPDATE)));
     private final Set<Permission> permissions;
 
     Role(Set<Permission> permissions) {

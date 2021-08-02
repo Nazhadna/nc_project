@@ -24,4 +24,5 @@ public class JwtUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("Client doesn't exist"));
         return JwtUser.fromClient(client);
     }
+
 }

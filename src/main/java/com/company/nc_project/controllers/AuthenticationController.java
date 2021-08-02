@@ -44,10 +44,10 @@ public class AuthenticationController {
 
         return ResponseEntity.ok(response);
     }
-
+/*
     @PostMapping("/logout")
     public void logout(HttpServletRequest request, HttpServletResponse response){
         SecurityContextLogoutHandler securityContextLogoutHandler = new SecurityContextLogoutHandler();
         securityContextLogoutHandler.logout(request, response, null);
-    }
+    }*/
 }
