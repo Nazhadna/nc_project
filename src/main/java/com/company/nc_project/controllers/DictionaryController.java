@@ -32,12 +32,10 @@ public class DictionaryController {
 
     @GetMapping("/gender")
     @ApiOperation(value = "show all genders")
-    @PreAuthorize("hasAuthority('all')")
     public Iterable<Gender> getAllGenders() { return genderRepository.findAll(); }
 
     @GetMapping("/gender/{id}")
     @ApiOperation(value = "get gender by id")
-    @PreAuthorize("hasAuthority('all')")
     public Optional<Gender> getGenderById(@PathVariable(value = "id") UUID genderId) {
         return genderRepository.findById(genderId);
     }

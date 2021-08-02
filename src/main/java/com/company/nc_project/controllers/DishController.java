@@ -34,8 +34,11 @@ public class DishController {
     @Autowired
     StoredProductRepository storedProductRepository;
 
-    DishService dishService = new DishService();
-    ClientService clientService = new ClientService();
+    @Autowired
+    DishService dishService;
+
+    @Autowired
+    ClientService clientService;
 
     @GetMapping()
     @ApiOperation(value = "show all dishes")

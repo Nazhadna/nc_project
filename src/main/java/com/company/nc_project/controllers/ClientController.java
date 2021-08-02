@@ -57,12 +57,11 @@ public class ClientController {
         return clientRepository.save(client);
     }
 
-    @PostMapping()
+    @PostMapping("/create")
     @ApiOperation(value = "create client")
-    @PreAuthorize("hasAuthority('all')")
     public Client createClient(@Valid @RequestBody Client client) {
-        client.setPassword(securityConfig.passwordEncoder().encode(client.getPassword()));
-        return clientRepository.save(client);
+            client.setPassword(securityConfig.passwordEncoder().encode(client.getPassword()));
+            return clientRepository.save(client);
     }
 
     @DeleteMapping("/{id}")

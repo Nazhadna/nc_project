@@ -7,6 +7,7 @@ import com.company.nc_project.model.Product;
 import com.company.nc_project.repository.ClientRepository;
 import com.company.nc_project.repository.ProductRepository;
 import com.company.nc_project.repository.StoredProductRepository;
+import com.company.nc_project.security.JwtTokenProvider;
 import com.company.nc_project.service.ClientService;
 import com.company.nc_project.service.ProductService;
 import io.swagger.annotations.ApiOperation;
@@ -32,8 +33,11 @@ public class ProductController {
     @Autowired
     StoredProductRepository storedProductRepository;
 
-    ProductService productService = new ProductService();
-    ClientService clientService = new ClientService();
+    @Autowired
+    ProductService productService;
+
+    @Autowired
+    ClientService clientService;
 
     @GetMapping()
     @ApiOperation(value = "show all products")
@@ -52,7 +56,8 @@ public class ProductController {
     @PostMapping("/stored_product")
     @ApiOperation(value = "add stored product")
     @PreAuthorize("hasAuthority('for_user')")
-    public StoredProduct addStoredProduct(@RequestBody StoredProduct storedProduct) {
+    public StoredProduct addStoredProduct(HttpServletRequest request, @RequestBody StoredProduct storedProduct) {
+        storedProduct.setClient(clientService.getClientFromRequest(request));
         return storedProductRepository.save(storedProduct);
     }
 
@@ -72,7 +77,7 @@ public class ProductController {
         storedProductRepository.deleteById(storedProductId);
     }
 
-    @PostMapping("/{client_id}/by_client")
+    @PostMapping("/by_client")
     @ApiOperation(value = "get client's stored products")
     @PreAuthorize("hasAuthority('for_user')")
     public Set<StoredProduct> getStoredProductByClient(HttpServletRequest request) {

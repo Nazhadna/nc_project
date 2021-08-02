@@ -46,5 +46,6 @@ public class Client {
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "role", nullable = false)
+    @JsonIgnore
     private Role role = Role.USER;
 }
