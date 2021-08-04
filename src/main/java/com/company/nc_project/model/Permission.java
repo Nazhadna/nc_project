@@ -1,9 +1,9 @@
 package com.company.nc_project.model;
 
 public enum Permission {
-    READ("all"),
-    WRITE("for_user"),
-    UPDATE("for_admin");
+    ALL("all"),
+    USER("for_user"),
+    ADMIN("for_admin");
 
     private final String permission;
 

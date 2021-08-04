@@ -1,4 +1,4 @@
-package com.company.nc_project;
+package com.company.nc_project.security;
 
 public class AuthenticationRequestDTO {
 

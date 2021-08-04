@@ -40,6 +40,20 @@ public class DictionaryController {
         return genderRepository.findById(genderId);
     }
 
+    @PostMapping("/gender")
+    @ApiOperation(value = "add gender")
+    @PreAuthorize("hasAuthority('for_admin')")
+    public Gender addGender(@Valid @RequestBody Gender gender) {
+        return genderRepository.save(gender);
+    }
+
+    @PostMapping("/gender/update")
+    @ApiOperation(value = "update gender")
+    @PreAuthorize("hasAuthority('for_admin')")
+    public Gender updateGender(@Valid @RequestBody Gender gender) {
+        return genderRepository.save(gender);
+    }
+
     @GetMapping("/place")
     @ApiOperation(value = "show all places")
     @PreAuthorize("hasAuthority('all')")
@@ -52,6 +66,20 @@ public class DictionaryController {
         return placeRepository.findById(placeId);
     }
 
+    @PostMapping("/place")
+    @ApiOperation(value = "add place")
+    @PreAuthorize("hasAuthority('for_admin')")
+    public Place addPlace(@Valid @RequestBody Place place) {
+        return placeRepository.save(place);
+    }
+
+    @PostMapping("/place/update")
+    @ApiOperation(value = "update place")
+    @PreAuthorize("hasAuthority('for_admin')")
+    public Place updatePlace(@Valid @RequestBody Place place) {
+        return placeRepository.save(place);
+    }
+
     @GetMapping("/unit")
     @ApiOperation(value = "show all units")
     @PreAuthorize("hasAuthority('all')")
@@ -62,6 +90,20 @@ public class DictionaryController {
     @PreAuthorize("hasAuthority('all')")
     public Optional<Unit> getUnitById(@PathVariable(value = "id") UUID unitId) {
         return unitRepository.findById(unitId);
+    }
+
+    @PostMapping("/unit")
+    @ApiOperation(value = "add unit")
+    @PreAuthorize("hasAuthority('for_admin')")
+    public Unit addUnit(@Valid @RequestBody Unit unit) {
+        return unitRepository.save(unit);
+    }
+
+    @PostMapping("/unit/update")
+    @ApiOperation(value = "update unit")
+    @PreAuthorize("hasAuthority('for_admin')")
+    public Unit updateUnit(@Valid @RequestBody Unit unit) {
+        return unitRepository.save(unit);
     }
 
     @GetMapping("/country")
@@ -91,6 +133,4 @@ public class DictionaryController {
     public Country updateCountry(@Valid @RequestBody Country country) {
         return countryRepository.save(country);
     }
-
-
 }

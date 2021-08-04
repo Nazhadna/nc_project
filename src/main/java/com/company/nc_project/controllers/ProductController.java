@@ -1,13 +1,11 @@
 package com.company.nc_project.controllers;
 
 import com.company.nc_project.model.Client;
-import com.company.nc_project.model.Dish;
-import com.company.nc_project.model.StoredProduct;
 import com.company.nc_project.model.Product;
+import com.company.nc_project.model.StoredProduct;
 import com.company.nc_project.repository.ClientRepository;
 import com.company.nc_project.repository.ProductRepository;
 import com.company.nc_project.repository.StoredProductRepository;
-import com.company.nc_project.security.JwtTokenProvider;
 import com.company.nc_project.service.ClientService;
 import com.company.nc_project.service.ProductService;
 import io.swagger.annotations.ApiOperation;
@@ -16,9 +14,9 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.Set;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/product")

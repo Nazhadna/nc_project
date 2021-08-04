@@ -1,12 +1,9 @@
 package com.company.nc_project.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -46,9 +43,5 @@ public class Product {
     @Override
     public int hashCode() {
         return id.hashCode();
-    }
-
-    public int getLifetime() {
-        return lifetime;
     }
 }

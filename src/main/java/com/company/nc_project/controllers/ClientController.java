@@ -1,14 +1,12 @@
 package com.company.nc_project.controllers;
 
+import com.company.nc_project.config.SecurityConfig;
 import com.company.nc_project.model.Client;
 import com.company.nc_project.repository.ClientRepository;
-import com.company.nc_project.security.JwtTokenProvider;
 import com.company.nc_project.service.ClientService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +22,7 @@ public class ClientController {
     ClientRepository clientRepository;
 
     @Autowired
-    com.company.nc_project.config.SecurityConfig securityConfig;
+    SecurityConfig securityConfig;
 
     @Autowired
     ClientService clientService;
@@ -43,7 +41,7 @@ public class ClientController {
         return clientRepository.findById(clientId);
     }
 
-    @GetMapping("/me")
+    @GetMapping("/who_am_i")
     @ApiOperation(value = "show client")
     @PreAuthorize("hasAuthority('all')")
     public Client getClient(HttpServletRequest request) {

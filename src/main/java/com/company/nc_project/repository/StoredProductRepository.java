@@ -8,5 +8,5 @@ import java.util.Set;
 import java.util.UUID;
 
 public interface StoredProductRepository extends CrudRepository<StoredProduct, UUID> {
-    public Set<StoredProduct> getAllByClient(Client client);
+    Set<StoredProduct> getAllByClient(Client client);
 }
