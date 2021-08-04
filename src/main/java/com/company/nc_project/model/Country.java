@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 import java.util.UUID;
 
 @Entity
@@ -17,5 +18,6 @@ public class Country {
     private UUID id;
 
     @Column(name = "name", nullable = false)
+    @NotEmpty
     private String name;
 }

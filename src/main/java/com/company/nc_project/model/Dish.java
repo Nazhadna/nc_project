@@ -21,7 +21,7 @@ public class Dish{
     @NotEmpty
     private String name;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "country_id", referencedColumnName = "id")
     private Country country;
 
@@ -52,4 +52,19 @@ public class Dish{
             inverseJoinColumns = @JoinColumn(name = "product_id"))
     @JsonIgnore
     Set<Product> products;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Dish dish = (Dish) o;
+
+        return id.equals(dish.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
 }

@@ -1,17 +1,12 @@
 package com.company.nc_project.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
-import javax.validation.Valid;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -31,7 +26,7 @@ public class Client {
     @Min(14)
     private Integer age;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "gender_id", referencedColumnName = "id")
     private Gender gender;
 
@@ -43,4 +38,9 @@ public class Client {
     @Column(name = "password", nullable = false)
     @NotEmpty
     private String password;
+
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    @JsonIgnore
+    private Role role = Role.USER;
 }
