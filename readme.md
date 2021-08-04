@@ -12,4 +12,4 @@
 8. Аутентификация/Авторизация.
 
 # ER-диаграмма
-![ER-диаграмма](https://github.com/Nazhadna/nc_project/raw/master/Docs/ERdiagram4.png)
+![ER-диаграмма](https://github.com/Nazhadna/nc_project/raw/master/Docs/final_ERdiagram.png)
