@@ -28,7 +28,7 @@ public class StoredProduct {
     private Date expirationDate;
 
     @Column(name = "quantity", nullable = false)
-    private double quantity;
+    private int quantity;
 
     @Override
     public boolean equals(Object o) {

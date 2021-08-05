@@ -7,6 +7,12 @@ public class Filter {
     private String recipe="";
     private Integer calories = Integer.MAX_VALUE;
 
+    public Filter(Country country, String recipe, Integer calories) {
+        this.country = country;
+        this.recipe = recipe;
+        this.calories = calories;
+    }
+
     public Country getCountry() {
         return country;
     }

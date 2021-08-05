@@ -59,13 +59,13 @@ public class ProductController {
         return storedProductRepository.save(storedProduct);
     }
 
-    @PostMapping("/expired_products/by_client")
+    @PostMapping("/expired_products")
     @ApiOperation(value = "show client's expired products")
     @PreAuthorize("hasAuthority('for_user')")
     public Set<StoredProduct> getExpiredProduct(HttpServletRequest request) {
         Client client = clientService.getClientFromRequest(request);
         Set<StoredProduct> storedProducts = storedProductRepository.getAllByClient(client);
-        return productService.getStoredProduct(storedProducts);
+        return productService.getExpiredProduct(storedProducts);
     }
 
     @DeleteMapping("/{storedProductId}")

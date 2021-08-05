@@ -4,6 +4,7 @@ import com.company.nc_project.filter.Filter;
 import com.company.nc_project.model.*;
 import com.company.nc_project.repository.ClientsDishRepository;
 import com.company.nc_project.repository.DishRepository;
+import com.company.nc_project.repository.DishesProductRepository;
 import com.company.nc_project.repository.StoredProductRepository;
 import com.company.nc_project.service.ClientService;
 import com.company.nc_project.service.DishService;
@@ -31,6 +32,9 @@ public class DishController {
     ClientsDishRepository clientsDishRepository;
 
     @Autowired
+    DishesProductRepository dishesProductRepository;
+
+    @Autowired
     StoredProductRepository storedProductRepository;
 
     @Autowired
@@ -51,6 +55,13 @@ public class DishController {
     @PreAuthorize("hasAuthority('for_admin')")
     public Dish createDish(@Valid @RequestBody Dish dish) {
         return dishRepository.save(dish);
+    }
+
+    @PostMapping("/add_product")
+    @ApiOperation(value = "add product to dish")
+    @PreAuthorize("hasAuthority('for_admin')")
+    public DishesProduct addProductForDish(@Valid @RequestBody DishesProduct dishesProduct) {
+        return dishesProductRepository.save(dishesProduct);
     }
 
     @GetMapping("/{id}")
