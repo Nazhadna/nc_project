@@ -53,13 +53,8 @@ public class JwtTokenProvider {
     }
 
     public boolean validateToken(String token){
-        try {
-            Jws<Claims> claimsJws = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-            return !claimsJws.getBody().getExpiration().before(new Date());
-        }catch (JwtException | IllegalArgumentException e){
-            System.out.println(e.getMessage());
-            return false;
-        }
+        Jws<Claims> claimsJws = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+        return !claimsJws.getBody().getExpiration().before(new Date());
     }
 
     public Authentication getAuthentication(String token){
